@@ -138,4 +138,25 @@ class ClassroomController extends Controller
 
         return response()->noContent();
     }
+    
+    public function manageUser(Request $request, string $id)
+    {
+        $data = $request->validate([
+            'user_id' => 'required|integer|exists:users,id',
+            'action' => 'required|in:attach,detach',
+        ]);
+
+        $classroom = $this->classroomService->manageUser(
+            $id,
+            (int) $data['user_id'],
+            $data['action']
+        );
+
+        return response()->json([
+            'message' => $data['action'] === 'attach'
+                ? 'Usuário matriculado na turma.'
+                : 'Usuário removido da turma.',
+            'classroom' => $classroom,
+        ]);
+    }
 }

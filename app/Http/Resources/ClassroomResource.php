@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\CourseResource;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
@@ -29,8 +30,11 @@ class ClassroomResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'vacancies' => $this->vacancies,
+            'course' => new CourseResource(
+                $this->whenLoaded('course')
+            ),
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at
+            'updated_at' => $this->updated_at,
         ];
     }
 }
